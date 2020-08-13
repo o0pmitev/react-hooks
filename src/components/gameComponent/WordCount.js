@@ -1,8 +1,8 @@
 import React from 'react'
 
-const WordCount = () => {
+const WordCount = (props) => {
   return(
-    <h3>I am the count: 2313</h3>
+  <h3>I am the count: ???</h3>
   )
 }
 

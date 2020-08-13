@@ -1,9 +1,10 @@
 import React from 'react'
 
-const Button = () => {
+const Button = (props) => {
+  const {calculateWordCount} = props
   return (
       
-        <button>Start</button>
+        <button onClick={calculateWordCount}>Start</button>
       
   )
 }
