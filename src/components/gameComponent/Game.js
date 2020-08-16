@@ -1,18 +1,24 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import Timer from './Timer'
 import StartButton from './StartButton'
 import WordCount from './WordCount'
 
 const Game = () => {
-  let [text, setText] = useState('')
-  let [isTimeRunning, setTimeRunning] = useState(false)
-  
+  const STARTING_TIME = 30
+  const [text, setText] = useState('')
+  const [isTimeRunning, setTimeRunning] = useState(false)
+  const [wordCount, setWordCount] = useState(0)
+  const [time, setTime] = useState(STARTING_TIME)
+  const textBoxRef = useRef(null)
+
   const handleChange = (e) => {
     // updates the state
     const {value} = e.target
     setText(value)
   }
-  
+
+
+
 const calculateWordCount = (text) => {
   //counting how many words there is a text area 
   //and removes any whitespace from the beginning and end of the sentence
@@ -23,18 +29,40 @@ const calculateWordCount = (text) => {
 }
 const startTimer = () => {
   // Start the timer
-  setTimeRunning(isTimeRunning = true)
+  setTimeRunning(true)
+  setTime(STARTING_TIME)
+  setText('')
+  textBoxRef.current.disabled = false
+  textBoxRef.current.focus()
 }
+
+const endTimer = () => {
+  setTimeRunning(false)
+  const numWords = calculateWordCount(text)
+  setWordCount(numWords)
+}
+
   return (
     <div className="game-container">
       <h2 className="game-title">How fast can you type 🤔</h2>
+
       <textarea
+      ref={textBoxRef}
        onChange={handleChange}
        value={text}
+       disabled={!isTimeRunning}
        />
-      <Timer isTimeRunning={isTimeRunning}/>
-      <StartButton calculateWordCount={() => console.log(calculateWordCount(text))}/>     
-      <WordCount/>
+
+      <Timer 
+      setTime={setTime} 
+      time={time} 
+      endTimer={endTimer} 
+      isTimeRunning={isTimeRunning}
+      />
+
+      {/* <StartButton calculateWordCount={() => console.log(calculateWordCount(text))}/>      */}
+      <StartButton isTimeRunning={isTimeRunning} startTimer={startTimer}/>     
+      <WordCount  wordCount={wordCount}/>
     </div>
   )
 }

@@ -1,15 +1,17 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 
 const Timer = (props) => {
-  const {isTimeRunning} = props
-  let [time, setTime] = useState(5)
+  const {isTimeRunning, endTimer, time, setTime} = props
+
   useEffect(()=>{
     if(isTimeRunning && time > 0) {
       setTimeout(()=> {
         setTime(time => time - 1)
       },1000)
+    } else {
+      endTimer()
     }
-  },[time])
+  },[time, isTimeRunning])
 
   return(
     <h3>I am the timer {time}</h3>
